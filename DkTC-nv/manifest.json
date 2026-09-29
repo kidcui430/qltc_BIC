@@ -1,0 +1,25 @@
+{
+  "id": "/",
+  "name": "PHIEU_DKTC",
+  "short_name": "P_DKTC",
+  "description": "Phần mềm tạo phiếu ĐK tăng ca",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0f172a",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "logo192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "logo512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

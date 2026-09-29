@@ -1,0 +1,1002 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <base target="_top" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"
+    />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#0f172a" />
+    <link rel="apple-touch-icon" href="icon-192.png" />
+    <style>
+      /* CSS Phong Cách Trải Nghiệm Mobile & PC Chuẩn Mực */
+      body {
+        font-family: "Segoe UI", system-ui, sans-serif;
+        background-color: #f1f5f9;
+        color: #1e293b;
+        padding: 20px;
+        margin: 0;
+        display: flex; /* Dùng Flexbox để canh giữa hoàn hảo trên PC */
+        justify-content: center;
+        min-height: 100vh;
+        box-sizing: border-box;
+      }
+
+      /* Giới hạn chiều rộng thẻ Card khoảng 1/3 màn hình PC (450px) */
+      .form-container {
+        overflow: hidden; /* Đảm bảo hình nền không bị tràn ra ngoài viền bo góc */
+        z-index: 1;
+        width: 100%;
+        max-width: 450px;
+        margin: 20px auto;
+        padding: 35px 30px;
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        position: relative;
+        border-top: 6px solid #800000;
+        align-self: flex-start; /* Nằm cách viền trên một chút */
+      }
+
+      .form-container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        /* Link hình ảnh mây/sương. Bạn có thể thay link hình khác vào đây */
+        background-image: url("./download.jfif");
+        opacity: 0.2; /* Chỉnh độ mờ (0.1 đến 1) để chữ không bị khó nhìn */
+        z-index: -1; /* Đẩy xuống dưới cùng */
+        pointer-events: none; /* Tránh việc hình nền chặn thao tác click chuột */
+      }
+
+      /* Đảm bảo nội dung form luôn nổi lên trên hình nền */
+      #login-section,
+      #changepass-section,
+      #form-section,
+      .logo-container,
+      h2 {
+        position: relative;
+        z-index: 2;
+      }
+
+      /* Ép các họa tiết 4 góc nổi lên lơ lửng, không đẩy form xuống */
+      .decor-season {
+        position: absolute !important;
+        pointer-events: none;
+      }
+
+      /* Biến chữ T thành Watermark siêu to khổng lồ nằm giữa form */
+      .watermark {
+        position: absolute !important;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%); /* Cân giữa tuyệt đối */
+        font-size: 250px; /* Phóng to chữ */
+        font-weight: 900;
+        color: rgba(128, 0, 0, 0.04); /* Màu đỏ đô mờ tiệp với nút bấm */
+        z-index: 0;
+        pointer-events: none; /* Tránh kẹt cảm ứng khi lướt điện thoại */
+        margin: 0;
+        line-height: 1;
+      }
+
+      .logo-container {
+        text-align: center;
+        margin-bottom: 20px;
+        margin-top: 10px !important; /* Kéo logo sát lên trên để bù trừ khoảng trống */
+        position: relative;
+        z-index: 2; /* Đảm bảo logo đè lên trên chữ T mờ */
+      }
+
+      .logo-container img {
+        max-height: 65px;
+      }
+
+      /* Tiêu đề cho ra giữa sẽ đẹp hơn với form hẹp */
+      h2 {
+        text-align: center;
+        color: #4747f8;
+        font-size: 22px;
+        margin-top: 0;
+        margin-bottom: 25px;
+        text-transform: uppercase;
+        font-weight: 800;
+        letter-spacing: 0.5px;
+      }
+
+      .form-group {
+        margin-bottom: 18px;
+      }
+      label {
+        display: block;
+        font-weight: 700;
+        font-size: 12px;
+        margin-bottom: 8px;
+        color: #475569;
+        text-transform: uppercase;
+      }
+      input,
+      select {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        box-sizing: border-box;
+        font-size: 14px;
+        background-color: #f8fafc;
+        transition: all 0.3s;
+        color: #1e293b;
+      }
+      input:focus,
+      select:focus {
+        outline: none;
+        border-color: #2563eb;
+        background-color: #fff;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      }
+      input[readonly] {
+        background-color: #e2e8f0;
+        color: #64748b;
+        font-weight: 600;
+        cursor: not-allowed;
+        border-color: #cbd5e1;
+      }
+
+      .checkbox-group {
+        display: flex;
+        align-items: center;
+        margin-bottom: 18px;
+        background-color: #f0f9ff;
+        padding: 15px;
+        border-radius: 6px;
+        border: 1px solid #bae6fd;
+      }
+      .checkbox-group input {
+        width: 20px;
+        height: 20px;
+        margin-right: 12px;
+        cursor: pointer;
+        accent-color: #0284c7;
+      }
+      .checkbox-group label {
+        margin-bottom: 0;
+        text-transform: none;
+        font-weight: 600;
+        color: #0369a1;
+        font-size: 14px;
+        cursor: pointer;
+      }
+
+      /* Chỉnh nút bấm full width cho cứng cáp */
+      button {
+        width: 40%;
+        padding: 14px;
+        background-color: #4747f8;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-weight: 800;
+        font-size: 14px;
+        cursor: pointer;
+        margin-top: 10px;
+        /* 2 Thuộc tính thêm/sửa để canh giữa */
+        display: block;
+        margin: 10px auto 0;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s;
+        box-shadow: 0 4px 6px rgba(26, 54, 93, 0.2);
+      }
+      button:hover {
+        background-color: #000070;
+        transform: translateY(-1px);
+      }
+      button:disabled {
+        background-color: #cbd5e1;
+        cursor: not-allowed;
+        box-shadow: none;
+        transform: none;
+      }
+
+      #message {
+        margin-top: 15px;
+        text-align: center;
+        font-weight: bold;
+        font-size: 14px;
+      }
+      .password-wrapper {
+        position: relative;
+        display: block;
+      }
+      .toggle-eye {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        font-size: 16px;
+        user-select: none;
+        color: #64748b;
+      }
+
+      .user-toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 1px dashed #cbd5e1;
+      }
+      .user-greeting {
+        font-size: 14px;
+        font-weight: 600;
+        color: #1e293b;
+      }
+      .logout-btn {
+        background: none;
+        border: none;
+        color: #ef4444;
+        font-size: 13px;
+        font-weight: bold;
+        cursor: pointer;
+        padding: 0;
+        width: auto;
+        margin: 0;
+        box-shadow: none;
+        letter-spacing: normal;
+        text-transform: none;
+        text-decoration: underline;
+      }
+      .logout-btn:hover {
+        background: none;
+        color: #b91c1c;
+        transform: none;
+      }
+
+      #loading-section {
+        text-align: center;
+        padding: 40px 0;
+        color: #2563eb;
+        font-weight: bold;
+        font-size: 15px;
+      }
+
+      /* Nền popup làm tối hẳn lại để nổi bật thông báo */
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(15, 23, 42, 0.7);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        backdrop-filter: blur(2px);
+      }
+      .modal-content {
+        background: #fff;
+        padding: 30px 20px;
+        border-radius: 12px;
+        text-align: center;
+        max-width: 320px;
+        width: 85%;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        animation: popIn 0.3s ease-out;
+      }
+      .modal-icon {
+        font-size: 55px;
+        margin-bottom: 10px;
+      }
+      .modal-content h3 {
+        color: #16a34a;
+        margin: 0 0 10px 0;
+        font-size: 18px;
+        font-weight: 900;
+      }
+      .modal-content p {
+        color: #475569;
+        font-size: 14px;
+        margin-bottom: 18px;
+        line-height: 1.5;
+      }
+      .modal-content button {
+        background-color: #16a34a;
+        margin-top: 0;
+        box-shadow: 0 4px 6px rgba(22, 163, 74, 0.2);
+      }
+      .modal-content button:hover {
+        background-color: #15803d;
+      }
+      @keyframes popIn {
+        0% {
+          transform: scale(0.8);
+          opacity: 0;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      .sunday-note {
+        background-color: #e0f2fe;
+        color: #0369a1;
+        padding: 10px 14px;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 600;
+        margin-top: 5px;
+        margin-bottom: 15px;
+        border-left: 4px solid #0284c7;
+        text-transform: none;
+      }
+      /* =========================================
+        TỐI ƯU HOÁ TỰ ĐỘNG CHO MÀN HÌNH MOBILE*/
+
+      @media (max-width: 480px) {
+        body {
+          padding: 10px; /* Giảm khoảng cách viền xám ngoài cùng */
+        }
+        .form-container {
+          padding: 25px 15px; /* Bóp lề trắng bên trong để ô input rộng ra */
+          margin: 10px auto;
+        }
+        h2 {
+          font-size: 18px; /* Thu nhỏ tiêu đề một xíu cho cân đối */
+        }
+        .decor-season {
+          width: 45px; /* Thu nhỏ họa tiết góc để không đè vào chữ */
+          height: 45px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="form-container">
+      <!-- SLOT TRANG TRÍ THEO MÙA (Bạn có thể nhét link ảnh vào url() khi đến lễ) -->
+      <!-- Ví dụ Tết: style="background-image: url('link-hoa-mai.png');" -->
+      <div class="decor-season decor-top-left"></div>
+      <div class="decor-season decor-top-right"></div>
+      <div class="decor-season decor-bottom-left"></div>
+      <div class="decor-season decor-bottom-right"></div>
+      <div class="watermark">T</div>
+      <div class="logo-container">
+        <a href="https://imgbb.com/"
+          ><img
+            src="https://i.ibb.co/G4xbXRCZ/logo-BIC.jpg"
+            alt="logo BIC"
+            border="0"
+            class="company-logo"
+        /></a>
+      </div>
+      <h2>PHIẾU ĐĂNG KÝ TĂNG CA</h2>
+
+      <div id="loading-section">Đang tải hệ thống... ⏳</div>
+
+      <!-- LOGIN SECTION -->
+      <div id="login-section" style="display: none">
+        <div class="form-group">
+          <label>Mã Số Nhân Viên (*)</label
+          ><input
+            type="text"
+            id="loginMaNV"
+            placeholder="Nhập mã NV...VD: BIC001"
+            required
+            style="text-transform: uppercase"
+            oninput="this.value = this.value.toUpperCase()"
+          />
+        </div>
+        <div class="form-group">
+          <label>Mật Khẩu (*)</label>
+          <div class="password-wrapper">
+            <input
+              type="password"
+              id="loginPass"
+              placeholder="Nhập mật khẩu..."
+              required
+            />
+            <span class="toggle-eye" onclick="togglePass('loginPass', this)"
+              >👁️</span
+            >
+          </div>
+        </div>
+        <button id="btnLogin" onclick="login(false)">ĐĂNG NHẬP</button>
+        <div
+          id="login-message"
+          style="
+            color: red;
+            text-align: center;
+            margin-top: 15px;
+            font-weight: 500;
+          "
+        ></div>
+      </div>
+
+      <!-- CHANGE PASS SECTION -->
+      <div id="changepass-section" style="display: none">
+        <p
+          style="
+            color: #c53030;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+          "
+        >
+          ⚠️ Đây là lần đăng nhập đầu tiên.<br />Vui lòng đổi mật khẩu để bảo
+          mật tài khoản!
+        </p>
+        <div class="form-group">
+          <label>Mật Khẩu Mới</label>
+          <div class="password-wrapper">
+            <input
+              type="password"
+              id="newPass"
+              placeholder="Nhập mật khẩu mới..."
+              required
+            /><span class="toggle-eye" onclick="togglePass('newPass', this)"
+              >👁️</span
+            >
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Nhập Lại Mật Khẩu</label>
+          <div class="password-wrapper">
+            <input
+              type="password"
+              id="confirmNewPass"
+              placeholder="Xác nhận lại mật khẩu..."
+              required
+            /><span
+              class="toggle-eye"
+              onclick="togglePass('confirmNewPass', this)"
+              >👁️</span
+            >
+          </div>
+        </div>
+        <button id="btnChangePass" onclick="doChangePass()">
+          CẬP NHẬT & TIẾP TỤC
+        </button>
+        <div style="text-align: center; margin-top: 30px">
+          <button type="button" class="logout-btn" onclick="logout()">
+            ←←← Đăng nhập tài khoản khác
+          </button>
+        </div>
+        <div
+          id="changepass-message"
+          style="color: red; text-align: center; margin-top: 15px"
+        ></div>
+      </div>
+
+      <!-- MAIN FORM SECTION -->
+      <div id="form-section" style="display: none">
+        <div class="user-toolbar">
+          <div class="user-greeting">
+            Xin chào, <span id="displayHoTen" style="color: #3182ce"></span>
+          </div>
+          <button class="logout-btn" onclick="logout()">Thoát tài khoản</button>
+        </div>
+
+        <form id="tangCaForm">
+          <div class="form-group">
+            <label>Mã Số Nhân Viên (*)</label
+            ><input type="text" id="maNV" readonly />
+          </div>
+          <div class="form-group">
+            <label>Họ và Tên (*)</label
+            ><input type="text" id="hoTen" readonly />
+          </div>
+          <div class="form-group">
+            <label>Bộ Phận (*)</label><input type="text" id="boPhan" readonly />
+          </div>
+          <div class="checkbox-group">
+            <input
+              type="checkbox"
+              id="coLamChuNhat"
+              onchange="
+                toggleChuNhat();
+                calculateSunday();
+              "
+            />
+            <label for="coLamChuNhat">Làm ngày Chủ Nhật</label>
+          </div>
+
+          <div
+            id="chuNhat-section"
+            style="
+              display: none;
+              background-color: #fffaf0;
+              padding: 15px;
+              border-radius: 6px;
+              border: 1px dashed #ed8936;
+              margin-bottom: 18px;
+            "
+          >
+            <div
+              id="noteChuNhat"
+              class="sunday-note"
+              style="display: none"
+            ></div>
+            <p
+              style="
+                margin-top: 0;
+                font-weight: bold;
+                color: #dd6b20;
+                font-size: 13px;
+                text-transform: uppercase;
+              "
+            >
+              Chi tiết giờ Chủ Nhật
+            </p>
+            <div style="display: flex; gap: 10px; margin-bottom: 0">
+              <div style="flex: 1">
+                <label style="color: #c05621">Từ Giờ:</label
+                ><input type="time" id="tuGioCN" onchange="calculateSunday()" />
+              </div>
+              <div style="flex: 1">
+                <label style="color: #c05621">Số giờ CN:</label
+                ><input
+                  type="text"
+                  id="soGioCN"
+                  readonly
+                  placeholder="Auto Calculate..."
+                  style="
+                    color: #dd6b20;
+                    font-weight: bold;
+                    background-color: #fffaf0;
+                  "
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            style="
+              color: red;
+              font-style: italic;
+              font-weight: bold;
+              font-size: 13px;
+              margin-bottom: 10px;
+            "
+          >
+            * Nếu có đk làm CN. Vui lòng chọn đúng ngày trên lịch nhé!
+          </div>
+          <div class="form-group">
+            <label>Từ Ngày (*)</label
+            ><input type="date" id="tuNgay" required onchange="calculate()" />
+          </div>
+          <div class="form-group">
+            <label>Tới Ngày (*)</label
+            ><input type="date" id="toiNgay" required onchange="calculate()" />
+          </div>
+          <div class="form-group">
+            <label>Giờ TC/Ngày thường (*)</label
+            ><input
+              type="number"
+              id="soGioMotNgay"
+              step="0.5"
+              min="0"
+              placeholder="Nhập 0 nếu chỉ làm CN..."
+              required
+              oninput="calculate()"
+            />
+          </div>
+          <div class="form-group">
+            <label>TỔNG Giờ TC trong giai đoạn này</label
+            ><input
+              type="text"
+              id="tongSoGio"
+              readonly
+              placeholder="Auto Calculate..."
+              style="color: #c53030; font-weight: bold"
+            />
+          </div>
+          <div class="form-group">
+            <label>Lý do TC (Có thể để trống)</label
+            ><input
+              type="text"
+              id="lyDo"
+              placeholder="Nhập ngắn gọn lý do..."
+            />
+          </div>
+
+          <button type="submit" id="btnSubmit">GỬI YÊU CẦU</button>
+          <div id="message"></div>
+        </form>
+      </div>
+
+      <div id="successModal" class="modal-overlay" style="display: none">
+        <div class="modal-content">
+          <div class="modal-icon">✅</div>
+          <h3>Đăng ký thành công !</h3>
+          <p>
+            Xin cảm ơn!<br />
+            Lưu ý đây chỉ là phần đăng ký,<br />phần phê duyệt sẽ sớm được<br />xem
+            xét và DUYỆT theo<br /><span
+              style="color: #ff6600; font-weight: bold"
+              >Bảng Chia Ca !</span
+            >
+          </p>
+          <button type="button" onclick="closeModal()">ĐÓNG</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // ============================================
+      // ĐIỀN LINK WEB APP CỦA BẠN VÀO ĐÂY
+      // ============================================
+      const API_URL = "https://api-dktc.quangtriet430.workers.dev";
+
+      async function callAPI(action, data = {}) {
+        try {
+          const response = await fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify({ action: action, data: data }),
+          });
+          return await response.json();
+        } catch (error) {
+          console.error("Lỗi API:", error);
+          return { success: false, message: "Lỗi kết nối Server!" };
+        }
+      }
+
+      function togglePass(inputId, icon) {
+        var input = document.getElementById(inputId);
+        if (input.type === "password") {
+          input.type = "text";
+          icon.textContent = "😜";
+        } else {
+          input.type = "password";
+          icon.textContent = "👁️";
+        }
+      }
+
+      window.onload = function () {
+        var savedMaNV = localStorage.getItem("bic_maNV");
+        var savedPass = localStorage.getItem("bic_pass");
+
+        var passInput = document.getElementById("loginPass");
+        var maNVInput = document.getElementById("loginMaNV");
+
+        // Lắng nghe phím Enter ở ô Mật Khẩu
+        if (passInput) {
+          passInput.addEventListener("keydown", function (event) {
+            if (event.key === "Enter") {
+              event.preventDefault(); // Ngăn trình duyệt tự động submit form
+              login(false);
+            }
+          });
+        }
+
+        // Lắng nghe phím Enter ở ô Mã Nhân Viên
+        if (maNVInput) {
+          maNVInput.addEventListener("keydown", function (event) {
+            if (event.key === "Enter") {
+              event.preventDefault();
+              login(false);
+            }
+          });
+        }
+        // GẮN SỰ KIỆN ENTER CHO PHẦN ĐỔI MẬT KHẨU
+        var newPassInput = document.getElementById("newPass");
+        var confirmNewPassInput = document.getElementById("confirmNewPass");
+
+        // Lắng nghe phím Enter ở ô Mật Khẩu Mới
+        if (newPassInput) {
+          newPassInput.addEventListener("keydown", function (event) {
+            if (event.key === "Enter") {
+              event.preventDefault();
+              doChangePass();
+            }
+          });
+        }
+
+        // Lắng nghe phím Enter ở ô Xác Nhận Mật Khẩu Mới
+        if (confirmNewPassInput) {
+          confirmNewPassInput.addEventListener("keydown", function (event) {
+            if (event.key === "Enter") {
+              event.preventDefault();
+              doChangePass();
+            }
+          });
+        }
+
+        // KIỂM TRA ĐĂNG NHẬP TỰ ĐỘNG
+        if (savedMaNV && savedPass) {
+          document.getElementById("loginMaNV").value = savedMaNV;
+          document.getElementById("loginPass").value = savedPass;
+          login(true);
+        } else {
+          document.getElementById("loading-section").style.display = "none";
+          document.getElementById("login-section").style.display = "block";
+        }
+      };
+
+      async function login(isAutoLogin) {
+        var maNV = document.getElementById("loginMaNV").value.trim();
+        var pass = document.getElementById("loginPass").value.trim();
+        var btn = document.getElementById("btnLogin");
+        var msg = document.getElementById("login-message");
+
+        if (!maNV || !pass) {
+          msg.innerHTML = "Vui lòng nhập đầy đủ!";
+          return;
+        }
+
+        if (!isAutoLogin) {
+          btn.innerHTML = "ĐANG KIỂM TRA...";
+          btn.disabled = true;
+          msg.innerHTML = "";
+        }
+
+        let res = await callAPI("doLogin", { maNV: maNV, matKhau: pass });
+
+        if (!isAutoLogin) {
+          btn.innerHTML = "ĐĂNG NHẬP";
+          btn.disabled = false;
+        }
+
+        if (res && res.success) {
+          localStorage.setItem("bic_maNV", maNV);
+          localStorage.setItem("bic_pass", pass);
+          document.getElementById("maNV").value = maNV.toUpperCase();
+          document.getElementById("hoTen").value = res.hoTen.toUpperCase();
+          document.getElementById("boPhan").value = res.boPhan;
+          document.getElementById("displayHoTen").innerText =
+            res.hoTen.toUpperCase();
+
+          document.getElementById("loading-section").style.display = "none";
+          document.getElementById("login-section").style.display = "none";
+
+          if (res.isFirstTime) {
+            document.getElementById("changepass-section").style.display =
+              "block";
+          } else {
+            document.getElementById("form-section").style.display = "block";
+          }
+        } else {
+          if (isAutoLogin) {
+            logout();
+            document.getElementById("loading-section").style.display = "none";
+            document.getElementById("login-section").style.display = "block";
+          } else {
+            msg.innerHTML = res.message || "Đăng nhập thất bại!";
+          }
+        }
+      }
+
+      async function doChangePass() {
+        var maNV = document.getElementById("maNV").value;
+        var p1 = document.getElementById("newPass").value.trim();
+        var p2 = document.getElementById("confirmNewPass").value.trim();
+        var msg = document.getElementById("changepass-message");
+        var btn = document.getElementById("btnChangePass");
+
+        if (p1 !== p2) {
+          msg.innerHTML = "Mật khẩu không khớp!";
+          return;
+        }
+        if (p1 === "123456") {
+          msg.innerHTML = "Không được đặt lại pass mặc định!";
+          return;
+        }
+        if (!p1) {
+          msg.innerHTML = "Vui lòng nhập mật khẩu!";
+          return;
+        }
+
+        btn.innerHTML = "ĐANG LƯU...";
+        btn.disabled = true;
+
+        let res = await callAPI("changePassword", { maNV: maNV, newPass: p1 });
+
+        if (res === "Thành công") {
+          localStorage.setItem("bic_pass", p1);
+          document.getElementById("changepass-section").style.display = "none";
+          document.getElementById("form-section").style.display = "block";
+        } else {
+          msg.innerHTML = res;
+        }
+        btn.innerHTML = "CẬP NHẬT & TIẾP TỤC";
+        btn.disabled = false;
+      }
+
+      function logout() {
+        localStorage.removeItem("bic_maNV");
+        localStorage.removeItem("bic_pass");
+        document.getElementById("loginMaNV").value = "";
+        document.getElementById("loginPass").value = "";
+        document.getElementById("login-message").innerHTML = "";
+        document.getElementById("tangCaForm").reset();
+        document.getElementById("chuNhat-section").style.display = "none";
+        document.getElementById("form-section").style.display = "none";
+        document.getElementById("changepass-section").style.display = "none";
+        document.getElementById("login-section").style.display = "block";
+      }
+
+      function toggleChuNhat() {
+        var cnSection = document.getElementById("chuNhat-section");
+        if (document.getElementById("coLamChuNhat").checked) {
+          cnSection.style.display = "block";
+        } else {
+          cnSection.style.display = "none";
+          document.getElementById("tuGioCN").value = "";
+          document.getElementById("soGioCN").value = "";
+        }
+      }
+
+      function formatDate(dateStr) {
+        if (!dateStr) return "";
+        var d = new Date(dateStr);
+        return (
+          String(d.getDate()).padStart(2, "0") +
+          "/" +
+          String(d.getMonth() + 1).padStart(2, "0") +
+          "/" +
+          d.getFullYear()
+        );
+      }
+
+      function updateSundayNote() {
+        var coCN = document.getElementById("coLamChuNhat").checked;
+        var tuNgay = document.getElementById("tuNgay").value;
+        var noteElem = document.getElementById("noteChuNhat");
+        if (!noteElem) return;
+
+        if (coCN && tuNgay) {
+          var start = new Date(tuNgay);
+          var currentDay = start.getDay();
+          var sunday = new Date(start);
+          sunday.setDate(start.getDate() - currentDay);
+          var strSunday =
+            String(sunday.getDate()).padStart(2, "0") +
+            "/" +
+            String(sunday.getMonth() + 1).padStart(2, "0") +
+            "/" +
+            sunday.getFullYear();
+          noteElem.innerHTML =
+            "✨ Đăng ký cho Chủ Nhật ngày (" + strSunday + ")";
+          noteElem.style.display = "block";
+        } else {
+          noteElem.innerHTML = "";
+          noteElem.style.display = "none";
+        }
+      }
+
+      function calculate() {
+        var tuNgayVal = document.getElementById("tuNgay").value;
+        var toiNgayVal = document.getElementById("toiNgay").value;
+        var soGioMotNgay = parseFloat(
+          document.getElementById("soGioMotNgay").value,
+        );
+
+        if (
+          tuNgayVal &&
+          toiNgayVal &&
+          !isNaN(soGioMotNgay) &&
+          soGioMotNgay >= 0
+        ) {
+          var start = new Date(tuNgayVal);
+          var end = new Date(toiNgayVal);
+          if (end >= start) {
+            var daysCount = 0;
+            var current = new Date(start);
+            while (current <= end) {
+              if (current.getDay() !== 0) daysCount++;
+              current.setDate(current.getDate() + 1);
+            }
+            document.getElementById("tongSoGio").value = (
+              daysCount * soGioMotNgay
+            ).toFixed(2);
+          } else {
+            document.getElementById("tongSoGio").value = "0.00";
+          }
+        } else {
+          document.getElementById("tongSoGio").value = "";
+        }
+        calculateSunday();
+      }
+
+      function calculateSunday() {
+        if (
+          document.getElementById("coLamChuNhat").checked &&
+          document.getElementById("tuGioCN").value
+        ) {
+          document.getElementById("soGioCN").value = "8.00";
+        } else {
+          document.getElementById("soGioCN").value = "";
+        }
+        updateSundayNote();
+      }
+
+      document
+        .getElementById("tangCaForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+          var soGio = parseFloat(document.getElementById("soGioMotNgay").value);
+          if (isNaN(soGio) || soGio < 0) {
+            alert("❌ Số Giờ/Ngày không hợp lệ!");
+            return;
+          }
+
+          var isCNChecked = document.getElementById("coLamChuNhat").checked;
+          if (soGio === 0 && !isCNChecked) {
+            alert("❌ Nhập 0 giờ ngày thường, vui lòng đăng ký làm thêm CN!");
+            return;
+          }
+          if (
+            new Date(document.getElementById("toiNgay").value) <
+            new Date(document.getElementById("tuNgay").value)
+          ) {
+            alert("❌ 'Tới Ngày' không nhỏ hơn 'Từ Ngày'!");
+            return;
+          }
+          if (
+            isCNChecked &&
+            (!document.getElementById("tuGioCN").value ||
+              isNaN(parseFloat(document.getElementById("soGioCN").value)))
+          ) {
+            alert("❌ Vui lòng nhập Từ Giờ CN!");
+            return;
+          }
+
+          var btn = document.getElementById("btnSubmit");
+          var msg = document.getElementById("message");
+          btn.innerHTML = "ĐANG XỬ LÝ...";
+          btn.disabled = true;
+          msg.innerHTML = "";
+
+          var formObj = {
+            maNV: document.getElementById("maNV").value,
+            hoTen: document.getElementById("hoTen").value.toUpperCase(),
+            boPhan: document.getElementById("boPhan").value,
+            tuNgay: formatDate(document.getElementById("tuNgay").value),
+            toiNgay: formatDate(document.getElementById("toiNgay").value),
+            soGioMotNgay: document.getElementById("soGioMotNgay").value,
+            tongSoGio: document.getElementById("tongSoGio").value,
+            coLamChuNhat: isCNChecked ? "Có" : "Không",
+            tuGioCN: document.getElementById("tuGioCN").value,
+            soGioCN: document.getElementById("soGioCN").value,
+            lyDo: document.getElementById("lyDo").value,
+          };
+
+          let res = await callAPI("processForm", { formObject: formObj });
+
+          if (res === "Thành công") {
+            document.getElementById("successModal").style.display = "flex";
+            var currentBoPhan = document.getElementById("boPhan").value;
+            document.getElementById("tangCaForm").reset();
+            document.getElementById("chuNhat-section").style.display = "none";
+            document.getElementById("maNV").value = localStorage
+              .getItem("bic_maNV")
+              .toUpperCase();
+            document.getElementById("hoTen").value = document
+              .getElementById("displayHoTen")
+              .innerText.toUpperCase();
+            document.getElementById("boPhan").value = currentBoPhan;
+            msg.innerHTML = "";
+          } else {
+            msg.innerHTML = "⚠️ " + (res.error || res);
+            msg.style.color = "#c53030";
+          }
+          btn.innerHTML = "GỬI YÊU CẦU";
+          btn.disabled = false;
+        });
+
+      function closeModal() {
+        document.getElementById("successModal").style.display = "none";
+      }
+    </script>
+  </body>
+</html>

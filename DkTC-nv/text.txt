@@ -1,0 +1,51 @@
+/* .form-container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        /* Link hình ảnh mây/sương. Bạn có thể thay link hình khác vào đây */
+        background-image: url("./download.png");
+        opacity: 0.2; /* Chỉnh độ mờ (0.1 đến 1) để chữ không bị khó nhìn */
+        z-index: -1; /* Đẩy xuống dưới cùng */
+        pointer-events: none; /* Tránh việc hình nền chặn thao tác click chuột */
+      }
+
+      /* Đảm bảo nội dung form luôn nổi lên trên hình nền */
+      /*#login-section,
+      #changepass-section,
+      #form-section,
+      .logo-container,
+      h2 {
+        position: relative;
+        z-index: 2;
+      }
+
+      /* 3. Chuẩn bị sẵn 4 slot ở 4 góc để trang trí theo mùa (Noel, Tết...) */
+      /*.decor-season {
+        position: absolute;
+        width: 60px; /* Kích thước mặc định của hoa mai/người tuyết */
+        height: 60px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        z-index: 0; /* Nằm dưới nội dung form một chút */
+        opacity: 0.8;
+        pointer-events: none;
+      }
+      .decor-top-left {
+        top: 10px;
+        left: 10px;
+      }
+      .decor-top-right {
+        top: 10px;
+        right: 10px;
+      }
+      .decor-bottom-left {
+        bottom: 10px;
+        left: 10px;
+      }
+      .decor-bottom-right {
+        bottom: 10px;
+        right: 10px;
+      } */
